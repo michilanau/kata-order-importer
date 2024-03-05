@@ -2,12 +2,10 @@ package com.malanau.kataorderimporter.order.application._import;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.malanau.kataorderimporter.order.domain.Order;
 import com.malanau.kataorderimporter.order.domain.OrderPage;
+import com.malanau.kataorderimporter.order.domain.OrderRepository;
 import com.malanau.kataorderimporter.public_api.domain.ApiClient;
 import com.malanau.kataorderimporter.public_api.domain.ApiClientResponse;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -16,16 +14,21 @@ import org.springframework.util.StringUtils;
 public class OrderImporter {
   private final ApiClient apiClient;
   private final String baseUrl;
+  private final OrderRepository orderRepository;
 
-  public OrderImporter(ApiClient apiClient, @Value("${api.url}") String baseUrl) {
+  public OrderImporter(
+      ApiClient apiClient, @Value("${api.url}") String baseUrl, OrderRepository orderRepository) {
     this.apiClient = apiClient;
     this.baseUrl = baseUrl;
+    this.orderRepository = orderRepository;
   }
 
-  public Integer importOrders() {
+  public void importOrders() {
     String url = baseUrl;
-    List<Order> orders = new ArrayList<>();
     OrderPage orderPage;
+
+    // We make a new importation from zero
+    orderRepository.deleteAll();
 
     do {
       ApiClientResponse apiClientResponse = apiClient.getCall(url);
@@ -35,14 +38,12 @@ public class OrderImporter {
         break;
       }
 
-      orders.addAll(orderPage.getContent());
+      orderRepository.save(orderPage.getContent());
 
       if (!StringUtils.isEmpty(orderPage.getLinks().getNext())) {
         url = orderPage.getLinks().getNext().getValue();
       }
     } while (orderPage.hasNextPage());
-
-    return orders.size();
   }
 
   private OrderPage parseApiResponse(ApiClientResponse response) {
