@@ -18,8 +18,8 @@ public class OrderController {
   @GetMapping("/import")
   public ResponseEntity<String> importOrders() {
 
-    orderImporter.importOrders();
+    Integer numImports = orderImporter.importOrders();
 
-    return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    return new ResponseEntity<>("numImports: " + numImports, HttpStatus.ACCEPTED);
   }
 }

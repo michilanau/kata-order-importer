@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Link {
+public class OrderLink {
   public LinkSelf self;
-  public LinkNext next;
-  public LinkPrev prev;
 }

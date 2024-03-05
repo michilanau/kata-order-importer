@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class PageOrder {
-  public int page;
+public class OrderPage {
+  public Page page;
   public List<Order> content;
   public Link links;
 

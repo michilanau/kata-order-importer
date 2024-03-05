@@ -1,5 +1,6 @@
 package com.malanau.kataorderimporter.order.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,20 +9,44 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class Order {
-  public String uuid;
-  public String id;
-  public String region;
-  public String country;
-  public String item_type;
-  public String sales_channel;
-  public String priority;
-  public String date;
-  public String ship_date;
-  public int units_sold;
-  public double unit_price;
-  public double unit_cost;
-  public double total_revenue;
-  public double total_cost;
-  public double total_profit;
-  public Link links;
+  public OrderUuid uuid;
+
+  public OrderId id;
+
+  public OrderRegion region;
+
+  public OrderCountry country;
+
+  @JsonProperty("item_type")
+  public OrderItemType itemType;
+
+  @JsonProperty("sales_channel")
+  public OrderSalesChannel salesChannel;
+
+  public OrderPriority priority;
+
+  public OrderDate date;
+
+  @JsonProperty("ship_date")
+  public OrderShipDate shipDate;
+
+  @JsonProperty("units_sold")
+  public OrderUnitsSold unitsSold;
+
+  @JsonProperty("unit_price")
+  public OrderUnitPrice unitPrice;
+
+  @JsonProperty("unit_cost")
+  public OrderUnitCost unitCost;
+
+  @JsonProperty("total_revenue")
+  public OrderTotalRevenue totalRevenue;
+
+  @JsonProperty("total_cost")
+  public OrderTotalCost totalCost;
+
+  @JsonProperty("total_profit")
+  public OrderTotalProfit totalProfit;
+
+  public OrderLink links;
 }
