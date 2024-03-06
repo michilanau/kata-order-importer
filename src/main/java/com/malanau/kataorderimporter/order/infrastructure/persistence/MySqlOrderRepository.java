@@ -1,7 +1,26 @@
 package com.malanau.kataorderimporter.order.infrastructure.persistence;
 
+import com.malanau.kataorderimporter.order.domain.LinkSelf;
 import com.malanau.kataorderimporter.order.domain.Order;
+import com.malanau.kataorderimporter.order.domain.OrderCountry;
+import com.malanau.kataorderimporter.order.domain.OrderDate;
+import com.malanau.kataorderimporter.order.domain.OrderId;
+import com.malanau.kataorderimporter.order.domain.OrderItemType;
+import com.malanau.kataorderimporter.order.domain.OrderLink;
+import com.malanau.kataorderimporter.order.domain.OrderPriority;
+import com.malanau.kataorderimporter.order.domain.OrderRegion;
 import com.malanau.kataorderimporter.order.domain.OrderRepository;
+import com.malanau.kataorderimporter.order.domain.OrderSalesChannel;
+import com.malanau.kataorderimporter.order.domain.OrderShipDate;
+import com.malanau.kataorderimporter.order.domain.OrderTotalCost;
+import com.malanau.kataorderimporter.order.domain.OrderTotalProfit;
+import com.malanau.kataorderimporter.order.domain.OrderTotalRevenue;
+import com.malanau.kataorderimporter.order.domain.OrderUnitCost;
+import com.malanau.kataorderimporter.order.domain.OrderUnitPrice;
+import com.malanau.kataorderimporter.order.domain.OrderUnitsSold;
+import com.malanau.kataorderimporter.order.domain.OrderUuid;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +70,34 @@ public class MySqlOrderRepository implements OrderRepository {
   public void deleteAll() {
     String sql = "DELETE FROM orders";
     jdbcTemplate.update(sql);
+  }
+
+  @Override
+  public List<Order> findAll() {
+    String sql = "SELECT * FROM orders ORDER BY id";
+
+    return jdbcTemplate.query(sql, (rs, rowNum) -> mapOrder(rs));
+  }
+
+  private Order mapOrder(ResultSet rs) throws SQLException {
+    Order order =
+        new Order(
+            new OrderUuid(rs.getString("uuid")),
+            new OrderId(rs.getString("id")),
+            new OrderRegion(rs.getString("region")),
+            new OrderCountry(rs.getString("country")),
+            new OrderItemType(rs.getString("item_type")),
+            new OrderSalesChannel(rs.getString("sales_channel")),
+            OrderPriority.valueOf(rs.getString("priority")),
+            new OrderDate(rs.getString("date")),
+            new OrderShipDate(rs.getString("ship_date")),
+            new OrderUnitsSold(rs.getInt("units_sold")),
+            new OrderUnitPrice(rs.getDouble("unit_price")),
+            new OrderUnitCost(rs.getDouble("unit_cost")),
+            new OrderTotalRevenue(rs.getDouble("total_revenue")),
+            new OrderTotalCost(rs.getDouble("total_cost")),
+            new OrderTotalProfit(rs.getDouble("total_profit")),
+            new OrderLink(new LinkSelf(rs.getString("link"))));
+    return order;
   }
 }
