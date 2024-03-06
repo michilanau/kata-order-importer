@@ -2,10 +2,16 @@ package com.malanau.kataorderimporter.order.application._import;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.malanau.kataorderimporter.order.domain.Order;
 import com.malanau.kataorderimporter.order.domain.OrderPage;
 import com.malanau.kataorderimporter.order.domain.OrderRepository;
 import com.malanau.kataorderimporter.public_api.domain.ApiClient;
 import com.malanau.kataorderimporter.public_api.domain.ApiClientResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -23,9 +29,10 @@ public class OrderImporter {
     this.orderRepository = orderRepository;
   }
 
-  public void importOrders() {
+  public OrderImporterResponse importOrders() {
     String url = baseUrl;
     OrderPage orderPage;
+    List<Order> orders = new ArrayList<>();
 
     // We make a new importation from zero
     orderRepository.deleteAll();
@@ -40,10 +47,48 @@ public class OrderImporter {
 
       orderRepository.save(orderPage.getContent());
 
+      orders.addAll(orderPage.getContent());
+
       if (!StringUtils.isEmpty(orderPage.getLinks().getNext())) {
         url = orderPage.getLinks().getNext().getValue();
       }
-    } while (orderPage.hasNextPage());
+    } while (orderPage.hasNextPage() && orderPage.getPage().getValue() < 10);
+
+    return processOrderImporterResponse(orders);
+  }
+
+  private OrderImporterResponse processOrderImporterResponse(List<Order> orders) {
+    Map<String, Integer> itemTypeCount =
+        orders.stream()
+            .collect(
+                Collectors.groupingBy(
+                    order -> order.getItemType().getValue(), Collectors.summingInt(order -> 1)));
+
+    Map<String, Integer> salesChannel =
+        orders.stream()
+            .collect(
+                Collectors.groupingBy(
+                    order -> order.getSalesChannel().getValue(),
+                    Collectors.summingInt(order -> 1)));
+
+    Map<String, Integer> priority =
+        orders.stream()
+            .collect(
+                Collectors.groupingBy(
+                    order -> order.getPriority().toString(), Collectors.summingInt(order -> 1)));
+
+    Map<String, Integer> country =
+        orders.stream()
+            .collect(
+                Collectors.groupingBy(
+                    order -> order.getCountry().getValue(), Collectors.summingInt(order -> 1)));
+
+    return new OrderImporterResponse(
+        orders.size(),
+        new HashMap<>(itemTypeCount),
+        new HashMap<>(salesChannel),
+        new HashMap<>(priority),
+        new HashMap<>(country));
   }
 
   private OrderPage parseApiResponse(ApiClientResponse response) {

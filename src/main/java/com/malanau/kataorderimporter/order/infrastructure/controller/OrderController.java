@@ -1,6 +1,7 @@
 package com.malanau.kataorderimporter.order.infrastructure.controller;
 
 import com.malanau.kataorderimporter.order.application._import.OrderImporter;
+import com.malanau.kataorderimporter.order.application._import.OrderImporterResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,8 @@ public class OrderController {
   OrderImporter orderImporter;
 
   @GetMapping("/import")
-  public ResponseEntity<String> importOrders() {
+  public ResponseEntity<OrderImporterResponse> importOrders() {
 
-    orderImporter.importOrders();
-
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>(orderImporter.importOrders(), HttpStatus.OK);
   }
 }
