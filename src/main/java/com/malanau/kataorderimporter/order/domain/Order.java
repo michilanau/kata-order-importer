@@ -1,6 +1,9 @@
 package com.malanau.kataorderimporter.order.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.malanau.kataorderimporter.order.domain.deserializers.CustomOrderDateDeserializer;
+import com.malanau.kataorderimporter.order.domain.deserializers.CustomOrderShipDateDeserializer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +30,10 @@ public class Order {
 
   public OrderPriority priority;
 
+  @JsonDeserialize(using = CustomOrderDateDeserializer.class)
   public OrderDate date;
 
+  @JsonDeserialize(using = CustomOrderShipDateDeserializer.class)
   @JsonProperty("ship_date")
   public OrderShipDate shipDate;
 
