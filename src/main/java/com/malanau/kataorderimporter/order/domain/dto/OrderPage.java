@@ -1,4 +1,4 @@
-package com.malanau.kataorderimporter.order.domain;
+package com.malanau.kataorderimporter.order.domain.dto;
 
 import java.util.List;
 import java.util.Objects;

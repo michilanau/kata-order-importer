@@ -1,7 +1,7 @@
 package com.malanau.kataorderimporter.order.application.download;
 
 import com.malanau.kataorderimporter.order.application.find.OrderFinder;
-import com.malanau.kataorderimporter.order.domain.Order;
+import com.malanau.kataorderimporter.order.domain.dto.Order;
 import com.malanau.kataorderimporter.order.domain.exception.OrderDownloadException;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;

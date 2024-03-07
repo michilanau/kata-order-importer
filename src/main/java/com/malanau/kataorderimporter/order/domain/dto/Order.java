@@ -1,4 +1,4 @@
-package com.malanau.kataorderimporter.order.domain;
+package com.malanau.kataorderimporter.order.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

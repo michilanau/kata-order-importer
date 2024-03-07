@@ -3,7 +3,7 @@ package com.malanau.kataorderimporter.order.domain.deserializers;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.malanau.kataorderimporter.order.domain.OrderDate;
+import com.malanau.kataorderimporter.order.domain.dto.OrderDate;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

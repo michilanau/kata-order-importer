@@ -2,10 +2,10 @@ package com.malanau.kataorderimporter.order.application._import;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.malanau.kataorderimporter.order.domain.Order;
-import com.malanau.kataorderimporter.order.domain.OrderPage;
-import com.malanau.kataorderimporter.order.domain.OrderRepository;
+import com.malanau.kataorderimporter.order.domain.dto.Order;
+import com.malanau.kataorderimporter.order.domain.dto.OrderPage;
 import com.malanau.kataorderimporter.order.domain.exception.OrderImportException;
+import com.malanau.kataorderimporter.order.domain.repository.OrderRepository;
 import com.malanau.kataorderimporter.public_api.domain.ApiClient;
 import com.malanau.kataorderimporter.public_api.domain.ApiClientResponse;
 import java.util.ArrayList;

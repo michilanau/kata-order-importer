@@ -1,4 +1,4 @@
-package com.malanau.kataorderimporter.order.domain;
+package com.malanau.kataorderimporter.order.domain.dto;
 
 import com.malanau.kataorderimporter.shared.domain.StringValueObject;
 
