@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -34,14 +35,11 @@ public class OrderImporter {
     OrderPage orderPage;
     List<Order> orders = new ArrayList<>();
 
-    // We make a new importation from zero
-    orderRepository.deleteAll();
-
     do {
       ApiClientResponse apiClientResponse = apiClient.getCall(url);
       orderPage = parseApiResponse(apiClientResponse);
 
-      if (orderPage == null) {
+      if (Objects.isNull(orderPage)) {
         break;
       }
 
@@ -52,7 +50,7 @@ public class OrderImporter {
       if (!StringUtils.isEmpty(orderPage.getLinks().getNext())) {
         url = orderPage.getLinks().getNext().getValue();
       }
-    } while (orderPage.hasNextPage() && orderPage.getPage().getValue() < 10);
+    } while (orderPage.hasNextPage());
 
     return processOrderImporterResponse(orders);
   }

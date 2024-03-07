@@ -44,7 +44,13 @@ public class MySqlOrderRepository implements OrderRepository {
     String sql =
         "INSERT INTO orders (uuid, id, region, country, item_type, sales_channel, priority, "
             + "date, ship_date, units_sold, unit_price, unit_cost, total_revenue, total_cost, "
-            + "total_profit, link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + "total_profit, link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "
+            + "ON DUPLICATE KEY UPDATE "
+            + "uuid = VALUES(uuid), id = VALUES(id), region = VALUES(region), country = VALUES(country), "
+            + "item_type = VALUES(item_type), sales_channel = VALUES(sales_channel), priority = VALUES(priority), "
+            + "date = VALUES(date), ship_date = VALUES(ship_date), units_sold = VALUES(units_sold), "
+            + "unit_price = VALUES(unit_price), unit_cost = VALUES(unit_cost), total_revenue = VALUES(total_revenue), "
+            + "total_cost = VALUES(total_cost), total_profit = VALUES(total_profit), link = VALUES(link)";
 
     jdbcTemplate.update(
         sql,
