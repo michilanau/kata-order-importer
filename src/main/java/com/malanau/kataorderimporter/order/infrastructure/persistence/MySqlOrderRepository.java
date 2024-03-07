@@ -79,7 +79,7 @@ public class MySqlOrderRepository implements OrderRepository {
   }
 
   @Override
-  public List<Order> findAll() {
+  public List<Order> findAllOrderedById() {
     String sql = "SELECT * FROM orders ORDER BY id";
 
     return jdbcTemplate.query(sql, (rs, rowNum) -> mapOrder(rs));

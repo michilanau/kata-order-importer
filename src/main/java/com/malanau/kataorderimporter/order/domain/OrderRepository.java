@@ -10,5 +10,5 @@ public interface OrderRepository {
 
   void deleteAll();
 
-  List<Order> findAll();
+  List<Order> findAllOrderedById();
 }
