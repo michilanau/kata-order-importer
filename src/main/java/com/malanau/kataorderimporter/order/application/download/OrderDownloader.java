@@ -2,6 +2,7 @@ package com.malanau.kataorderimporter.order.application.download;
 
 import com.malanau.kataorderimporter.order.application.find.OrderFinder;
 import com.malanau.kataorderimporter.order.domain.Order;
+import com.malanau.kataorderimporter.order.domain.exception.OrderDownloadException;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,49 +21,53 @@ public class OrderDownloader {
     this.fileName = fileName;
   }
 
-  public void downloadCsv(HttpServletResponse response) throws IOException {
+  public void downloadCsv(HttpServletResponse response) {
+    try {
+      List<Order> orders = orderFinder.findAllOrderedById();
 
-    List<Order> orders = orderFinder.findAllOrderedById();
+      response.setContentType("text/csv");
+      response.setHeader(
+          HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "");
 
-    response.setContentType("text/csv");
-    response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "");
+      PrintWriter writer = response.getWriter();
+      writer.println(
+          "Order ID,Order Priority,Order Date,Region,Country,Item Type,Sales Channel,Ship Date,Units Sold,Unit Price,Unit Cost,Total Revenue,Total Cost,Total Profit");
 
-    PrintWriter writer = response.getWriter();
-    writer.println(
-        "Order ID,Order Priority,Order Date,Region,Country,Item Type,Sales Channel,Ship Date,Units Sold,Unit Price,Unit Cost,Total Revenue,Total Cost,Total Profit");
+      orders.forEach(
+          order ->
+              writer.println(
+                  order.getId().getValue()
+                      + ","
+                      + order.getPriority().toString()
+                      + ","
+                      + order.getDate().getValue()
+                      + ","
+                      + order.getRegion().getValue()
+                      + ","
+                      + order.getCountry().getValue()
+                      + ","
+                      + order.getItemType().getValue()
+                      + ","
+                      + order.getSalesChannel().getValue()
+                      + ","
+                      + order.getShipDate().getValue()
+                      + ","
+                      + order.getUnitsSold().getValue()
+                      + ","
+                      + order.getUnitPrice().getValue()
+                      + ","
+                      + order.getUnitCost().getValue()
+                      + ","
+                      + order.getTotalRevenue().getValue()
+                      + ","
+                      + order.getTotalCost().getValue()
+                      + ","
+                      + order.getTotalProfit().getValue()));
 
-    orders.forEach(
-        order ->
-            writer.println(
-                order.getId().getValue()
-                    + ","
-                    + order.getPriority().toString()
-                    + ","
-                    + order.getDate().getValue()
-                    + ","
-                    + order.getRegion().getValue()
-                    + ","
-                    + order.getCountry().getValue()
-                    + ","
-                    + order.getItemType().getValue()
-                    + ","
-                    + order.getSalesChannel().getValue()
-                    + ","
-                    + order.getShipDate().getValue()
-                    + ","
-                    + order.getUnitsSold().getValue()
-                    + ","
-                    + order.getUnitPrice().getValue()
-                    + ","
-                    + order.getUnitCost().getValue()
-                    + ","
-                    + order.getTotalRevenue().getValue()
-                    + ","
-                    + order.getTotalCost().getValue()
-                    + ","
-                    + order.getTotalProfit().getValue()));
-
-    writer.flush();
-    writer.close();
+      writer.flush();
+      writer.close();
+    } catch (IOException e) {
+      throw new OrderDownloadException("Error downloading CSV document.");
+    }
   }
 }

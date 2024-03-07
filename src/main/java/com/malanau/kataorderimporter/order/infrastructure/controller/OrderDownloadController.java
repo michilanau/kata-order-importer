@@ -2,7 +2,6 @@ package com.malanau.kataorderimporter.order.infrastructure.controller;
 
 import com.malanau.kataorderimporter.order.application.download.OrderDownloader;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +15,7 @@ public class OrderDownloadController {
   OrderDownloader orderDownloader;
 
   @GetMapping("/download")
-  public void downloadCsv(HttpServletResponse response) throws IOException {
+  public void downloadCsv(HttpServletResponse response) {
     orderDownloader.downloadCsv(response);
   }
 }

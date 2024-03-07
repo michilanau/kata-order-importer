@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.malanau.kataorderimporter.order.domain.Order;
 import com.malanau.kataorderimporter.order.domain.OrderPage;
 import com.malanau.kataorderimporter.order.domain.OrderRepository;
+import com.malanau.kataorderimporter.order.domain.exception.OrderImportException;
 import com.malanau.kataorderimporter.public_api.domain.ApiClient;
 import com.malanau.kataorderimporter.public_api.domain.ApiClientResponse;
 import java.util.ArrayList;
@@ -93,8 +94,7 @@ public class OrderImporter {
     try {
       return new ObjectMapper().readValue(response.getBody().getValue(), OrderPage.class);
     } catch (JsonProcessingException e) {
-      // Manejar la excepción o loggearla según sea necesario
-      return null;
+      throw new OrderImportException("Error parsing response from API.");
     }
   }
 }
