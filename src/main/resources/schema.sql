@@ -2,7 +2,7 @@ CREATE DATABASE orders;
 
 CREATE TABLE orders (
         uuid VARCHAR(36) PRIMARY KEY,
-        id VARCHAR(255),
+        id INT,
         region VARCHAR(255),
         country VARCHAR(255),
         item_type VARCHAR(255),

@@ -89,7 +89,7 @@ public class MySqlOrderRepository implements OrderRepository {
     Order order =
         new Order(
             new OrderUuid(rs.getString("uuid")),
-            new OrderId(rs.getString("id")),
+            new OrderId(rs.getInt("id")),
             new OrderRegion(rs.getString("region")),
             new OrderCountry(rs.getString("country")),
             new OrderItemType(rs.getString("item_type")),

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.malanau.kataorderimporter.order.domain.deserializers.CustomOrderDateDeserializer;
 import com.malanau.kataorderimporter.order.domain.deserializers.CustomOrderShipDateDeserializer;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,4 +57,47 @@ public class Order {
   public OrderTotalProfit totalProfit;
 
   public OrderLink links;
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Order order)) return false;
+    return Objects.equals(uuid, order.uuid)
+        && Objects.equals(id, order.id)
+        && Objects.equals(region, order.region)
+        && Objects.equals(country, order.country)
+        && Objects.equals(itemType, order.itemType)
+        && Objects.equals(salesChannel, order.salesChannel)
+        && priority == order.priority
+        && Objects.equals(date, order.date)
+        && Objects.equals(shipDate, order.shipDate)
+        && Objects.equals(unitsSold, order.unitsSold)
+        && Objects.equals(unitPrice, order.unitPrice)
+        && Objects.equals(unitCost, order.unitCost)
+        && Objects.equals(totalRevenue, order.totalRevenue)
+        && Objects.equals(totalCost, order.totalCost)
+        && Objects.equals(totalProfit, order.totalProfit)
+        && Objects.equals(links, order.links);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+        uuid,
+        id,
+        region,
+        country,
+        itemType,
+        salesChannel,
+        priority,
+        date,
+        shipDate,
+        unitsSold,
+        unitPrice,
+        unitCost,
+        totalRevenue,
+        totalCost,
+        totalProfit,
+        links);
+  }
 }

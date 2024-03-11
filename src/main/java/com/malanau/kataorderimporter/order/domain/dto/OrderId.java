@@ -1,9 +1,9 @@
 package com.malanau.kataorderimporter.order.domain.dto;
 
-import com.malanau.kataorderimporter.shared.domain.StringValueObject;
+import com.malanau.kataorderimporter.shared.domain.IntValueObject;
 
-public class OrderId extends StringValueObject {
-  public OrderId(String value) {
+public class OrderId extends IntValueObject {
+  public OrderId(Integer value) {
     super(value);
   }
 }
