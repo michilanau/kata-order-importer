@@ -8,8 +8,9 @@ import lombok.Getter;
 @Getter
 public class OrderImporterResponse {
   private Integer totalImported;
+  private HashMap<String, Integer> region;
+  private HashMap<String, Integer> country;
   private HashMap<String, Integer> itemTypes;
   private HashMap<String, Integer> salesChannel;
   private HashMap<String, Integer> priority;
-  private HashMap<String, Integer> country;
 }

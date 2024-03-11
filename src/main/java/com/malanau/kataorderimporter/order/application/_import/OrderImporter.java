@@ -57,6 +57,18 @@ public class OrderImporter {
   }
 
   private OrderImporterResponse processOrderImporterResponse(List<Order> orders) {
+    Map<String, Integer> region =
+        orders.stream()
+            .collect(
+                Collectors.groupingBy(
+                    order -> order.getRegion().getValue(), Collectors.summingInt(order -> 1)));
+
+    Map<String, Integer> country =
+        orders.stream()
+            .collect(
+                Collectors.groupingBy(
+                    order -> order.getCountry().getValue(), Collectors.summingInt(order -> 1)));
+
     Map<String, Integer> itemTypeCount =
         orders.stream()
             .collect(
@@ -76,18 +88,13 @@ public class OrderImporter {
                 Collectors.groupingBy(
                     order -> order.getPriority().toString(), Collectors.summingInt(order -> 1)));
 
-    Map<String, Integer> country =
-        orders.stream()
-            .collect(
-                Collectors.groupingBy(
-                    order -> order.getCountry().getValue(), Collectors.summingInt(order -> 1)));
-
     return new OrderImporterResponse(
         orders.size(),
+        new HashMap<>(region),
+        new HashMap<>(country),
         new HashMap<>(itemTypeCount),
         new HashMap<>(salesChannel),
-        new HashMap<>(priority),
-        new HashMap<>(country));
+        new HashMap<>(priority));
   }
 
   private OrderPage parseApiResponse(ApiClientResponse response) {
