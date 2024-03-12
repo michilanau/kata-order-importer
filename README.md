@@ -16,3 +16,11 @@ El proceso de importación es bastante pesado, ya que hay 1.000.000 de pedidos e
 Para disminuir el número de llamadas a la API se ha enviado el queryParam `max-per-page=1000`, ya que por defecto solo se recogen 100.
 
 El proceso de importación dura unos 10 min, mientras que el de descarga del csv son 3 min.
+
+# ⚙ Tecnologías
+- Java
+- SpringBoot
+- MySQL
+- Jdbc
+- Lombok
+- Maven
