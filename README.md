@@ -17,7 +17,7 @@ Para disminuir el número de llamadas a la API se ha enviado el queryParam `max-
 
 El proceso de importación dura unos 12 min, mientras que el de descarga del csv son 20s aprox.
 
-Añado los resultados de la importación y la descarga en el proyecto en los documentos importOrdersResponse.json y orders.csv.
+Añado los resultados de la importación y la descarga en el proyecto en `results.zip`.
 
 # ⚙ Tecnologías
 - Java
